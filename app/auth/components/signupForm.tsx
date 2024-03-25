@@ -1,3 +1,7 @@
+"use client";
+
+import Papa from "papaparse";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,19 +14,39 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function SignupForm() {
-  async function submit(data: FormData) {
-    "use server";
-    const file: File | null = data.get("file") as unknown as File;
-    if (!file) {
-      throw new Error("No file uploaded");
+  function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log(data.get("email"));
+    console.log(data.get("password"));
+
+    // Get the file from the form data
+    const file = data.get("file") as File | null;
+
+    // Print the file
+    if (file) {
+      console.log(`File name: ${file.name}`);
+      console.log(`File type: ${file.type}`);
+      console.log(`File size: ${file.size} bytes`);
+
+      // Check if the file type is CSV
+      if (file.type === "text/csv") {
+        // Parse the CSV file
+        Papa.parse(file, {
+          complete: function (results) {
+            console.log("Parsed results:", results.data);
+          },
+          error: function (err) {
+            console.log("Error parsing CSV:", err);
+          },
+        });
+      } else {
+        console.log("Invalid file type. Please upload a CSV file.");
+      }
+    } else {
+      console.log("No file selected");
     }
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    console.log(buffer.toString());
-
-    return { success: true };
+    return;
   }
 
   return (
@@ -30,20 +54,31 @@ export function SignupForm() {
       <CardHeader>
         <CardTitle className="text-xl">Sign Up</CardTitle>
         <CardDescription>
-          Enter your information to create an account
+          Optionally, import ratings from Letterboxd and IMDb to improve club
+          reccomendations.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={submit}>
+        <form onSubmit={submit}>
           <div className="grid gap-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="first-name">First name</Label>
-                <Input id="first-name" placeholder="Max" required />
+                <Input
+                  id="first-name"
+                  name="first-name"
+                  placeholder="John"
+                  required
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="last-name">Last name</Label>
-                <Input id="last-name" placeholder="Robinson" required />
+                <Input
+                  id="last-name"
+                  name="last-name"
+                  placeholder="Doe"
+                  required
+                />
               </div>
             </div>
             <div className="grid gap-2">
@@ -51,17 +86,18 @@ export function SignupForm() {
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                name="email"
+                placeholder="john@example.com"
                 required
               />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input id="password" name="password" type="password" required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Import Ratings</Label>
-              <Input type="file" name="file" accept=".csv" required />
+              <Input type="file" name="file" accept=".csv" />
             </div>
             <Button type="submit" className="w-full">
               Create an account

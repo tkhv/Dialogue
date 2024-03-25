@@ -15,7 +15,18 @@ export default function AuthLayout({
           alignItems: "center",
         }}
       >
-        {children}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+            color: "white",
+          }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

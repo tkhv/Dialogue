@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { SignupForm } from "./components/signupForm";
-import { LoginForm } from "./components/loginForm";
+import { SigninForm } from "../components/signinForm";
 
-export default function AuthenticationPage() {
+export default function SigninPage() {
   return (
     <div
       style={{
@@ -14,11 +13,11 @@ export default function AuthenticationPage() {
         color: "white",
       }}
     >
-      <SignupForm />
+      <SigninForm />
       <div className="mt-4 text-center text-sm">
-        Already have an account?{" "}
-        <Link href="#" className="underline">
-          Sign in
+        Don't have an account?{" "}
+        <Link href="/auth/signup" className="underline">
+          Sign up
         </Link>
       </div>
     </div>
