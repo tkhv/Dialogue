@@ -1,5 +1,8 @@
 "use client";
+
+import { useGlobalContext } from "@/app/context/authContext";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,11 +10,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function SigninPage() {
+  const router = useRouter();
+  const { setData, setIsLoggedIn } = useGlobalContext();
+
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log(data.get("email"));
     console.log(data.get("password"));
+    setIsLoggedIn(true);
+    setData({
+      fname: "John",
+      lname: "Doe",
+      email: data.get("email") as string,
+    });
+    router.push("/home");
     return;
   }
 
