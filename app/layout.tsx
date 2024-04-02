@@ -20,7 +20,29 @@ export default function RootLayout({
       <body className={inter.className}>
         <GlobalContextProvider>
           <Navbar />
-          {children}
+          <div
+            style={{
+              backgroundColor: "#15181D",
+              height: "100vh",
+              overflow: "scroll",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "row",
+            }}
+          >
+            <div
+              style={{
+                flex: 1,
+                overflow: "scroll",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              {children}
+            </div>
+          </div>
         </GlobalContextProvider>
       </body>
     </html>
