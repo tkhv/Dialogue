@@ -47,7 +47,7 @@ export default function Navbar() {
               href="/clubs"
               className={`transition-colors ${
                 pathname === "/clubs"
-                  ? "text-foreground"
+                  ? "text-background"
                   : "text-muted-foreground"
               } hover:text-foreground`}
             >
@@ -57,7 +57,7 @@ export default function Navbar() {
               href="/events"
               className={`transition-colors ${
                 pathname === "/events"
-                  ? "text-foreground"
+                  ? "text-background"
                   : "text-muted-foreground"
               } hover:text-foreground`}
             >
@@ -67,7 +67,7 @@ export default function Navbar() {
               href="/movies"
               className={`transition-colors ${
                 pathname === "/movies"
-                  ? "text-foreground"
+                  ? "text-background"
                   : "text-muted-foreground"
               } hover:text-foreground`}
             >
