@@ -49,7 +49,7 @@ export default function Navbar() {
                 pathname === "/clubs"
                   ? "text-background"
                   : "text-muted-foreground"
-              } hover:text-foreground`}
+              } hover:text-background`}
             >
               Clubs
             </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
                 pathname === "/events"
                   ? "text-background"
                   : "text-muted-foreground"
-              } hover:text-foreground`}
+              } hover:text-background`}
             >
               Events
             </Link>
@@ -69,7 +69,7 @@ export default function Navbar() {
                 pathname === "/movies"
                   ? "text-background"
                   : "text-muted-foreground"
-              } hover:text-foreground`}
+              } hover:text-background`}
             >
               Movies
             </Link>
