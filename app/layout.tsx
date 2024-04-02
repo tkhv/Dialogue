@@ -38,6 +38,7 @@ export default function RootLayout({
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 alignItems: "center",
+                maxWidth: "70vw",
               }}
             >
               {children}
