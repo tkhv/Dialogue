@@ -1,73 +1,35 @@
-import * as React from "react";
+"use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-
+import { getNowPlaying, Movie } from "@/lib/tmdbUtils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-export interface Artwork {
-  artist: string;
-  art: string;
-}
-
-export const works: Artwork[] = [
-  {
-    artist: "Ornella Binni",
-    art: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Tom Byrom",
-    art: "https://images.unsplash.com/photo-1548516173-3cabfa4607e9?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Vladimir Malyavko",
-    art: "https://images.unsplash.com/photo-1494337480532-3725c85fd2ab?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Ornella Binni",
-    art: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Tom Byrom",
-    art: "https://images.unsplash.com/photo-1548516173-3cabfa4607e9?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Vladimir Malyavko",
-    art: "https://images.unsplash.com/photo-1494337480532-3725c85fd2ab?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Ornella Binni",
-    art: "https://images.unsplash.com/photo-1465869185982-5a1a7522cbcb?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Tom Byrom",
-    art: "https://images.unsplash.com/photo-1548516173-3cabfa4607e9?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    artist: "Vladimir Malyavko",
-    art: "https://images.unsplash.com/photo-1494337480532-3725c85fd2ab?auto=format&fit=crop&w=300&q=80",
-  },
-];
-
 export default function MovieMenu() {
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const nowPlayingMovies = await getNowPlaying();
+      setMovies(nowPlayingMovies.slice(0, 10));
+    };
+
+    fetchMovies();
+  }, []);
+
   return (
-    <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-      <div className="flex w-max space-x-4 p-4">
-        {works.map((artwork) => (
-          <figure key={artwork.artist} className="shrink-0">
+    <ScrollArea className="w-full whitespace-nowrap rounded-md border my-10">
+      <div className="flex w-max space-x-4 p-4 ">
+        {movies.map((movie) => (
+          <figure key={movie.title} className="shrink-0">
             <div className="overflow-hidden rounded-md">
               <Image
-                src={artwork.art}
-                alt={`Photo by ${artwork.artist}`}
-                className="aspect-[3/4] h-fit w-fit object-cover"
+                src={movie.posterURL}
+                alt={`Poster for ${movie.title}`}
+                className="aspect-[3/4] h-fit w-fit object-cover max-w-[300px] max-h-[260px]"
                 width={300}
                 height={400}
               />
             </div>
-            <figcaption className="pt-2 text-xs text-muted-foreground">
-              Photo by{" "}
-              <span className="font-semibold text-foreground">
-                {artwork.artist}
-              </span>
-            </figcaption>
           </figure>
         ))}
       </div>
