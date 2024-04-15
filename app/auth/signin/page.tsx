@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+
+const usersRef = collection(db, "users");
 
 export default function SigninPage() {
   const router = useRouter();
@@ -18,14 +22,32 @@ export default function SigninPage() {
     const data = new FormData(event.currentTarget);
     console.log(data.get("email"));
     console.log(data.get("password"));
-    setIsLoggedIn(true);
-    setData({
-      fname: "John",
-      lname: "Doe",
-      email: data.get("email") as string,
-    });
-    router.push("/home");
-    return;
+
+    const checkIfExists = async () => {
+      const q = query(usersRef, where("email", "==", data.get("email")));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (doc.data().password === data.get("password")) {
+          console.log("User exists");
+
+          setIsLoggedIn(true);
+          setData({
+            userID: doc.data().userID,
+            fname: doc.data().fname,
+            lname: doc.data().lname,
+            email: doc.data().email,
+            ratings: doc.data().ratings,
+          });
+
+          router.push("/home");
+          return;
+        } else {
+          console.log("Incorrect password");
+        }
+      });
+    };
+
+    checkIfExists();
   }
 
   return (

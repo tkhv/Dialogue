@@ -9,9 +9,11 @@ import {
 } from "react";
 
 type UserData = {
+  userID: string;
   fname: string;
   lname: string;
   email: string;
+  ratings: [];
 };
 
 interface ContextProps {
@@ -25,9 +27,11 @@ const GlobalContext = createContext<ContextProps>({
   isLoggedIn: false,
   setIsLoggedIn: (): boolean => false,
   data: {
+    userID: "",
     fname: "",
     lname: "",
     email: "",
+    ratings: [],
   },
   setData: (): UserData[] => [],
 });
@@ -39,9 +43,11 @@ export const GlobalContextProvider = ({
 }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [data, setData] = useState<UserData>({
+    userID: "",
     fname: "",
     lname: "",
     email: "",
+    ratings: [],
   });
 
   return (
