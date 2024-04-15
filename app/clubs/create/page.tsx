@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { imageStorage } from "@/lib/firebase";
+import { imageStorage, db } from "@/lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { Club } from "@/lib/types";
 import { useRouter } from "next/navigation";
@@ -43,7 +44,24 @@ export default function CreatePage() {
     await uploadBytes(imgRef, data.get("thumbnail") as Blob);
     club.thumbnail = await getDownloadURL(imgRef);
     console.log(club);
-    router.push(`/clubs`);
+
+    const docRef = doc(db, "clubs", club.clubID);
+    await setDoc(docRef, {
+      clubID: club.clubID,
+      name: club.name,
+      description: club.description,
+      location: club.location,
+      latitude: club.latitude,
+      longitude: club.longitude,
+      thumbnail: club.thumbnail,
+      memberNames: club.memberNames,
+      genres: club.genres,
+      events: club.events,
+    });
+    const docSnap = await getDoc(docRef);
+    console.log(docSnap.data());
+
+    // router.push(`/clubs`);
   }
 
   return (
