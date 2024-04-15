@@ -6,16 +6,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { City } from "country-state-city";
 import { imageStorage } from "@/lib/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { Club } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import Autocomplete from "react-google-autocomplete";
+import { useState } from "react";
 
 export default function CreatePage() {
   const router = useRouter();
-  console.log(City.getCitiesOfCountry("US"));
+  const [location, setLocation] = useState({
+    address_components: [],
+  } as any) as React.SetStateAction<any>;
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -24,7 +27,12 @@ export default function CreatePage() {
       clubID: uuidv4(),
       name: data.get("name") as string,
       description: data.get("desc") as string,
-      location: data.get("location") as string,
+      location:
+        location.address_components[0].long_name +
+        ", " +
+        location.address_components[2].short_name,
+      latitude: location.geometry.location.lat(),
+      longitude: location.geometry.location.lng(),
       thumbnail: "",
       memberNames: [],
       genres: [],
@@ -75,10 +83,14 @@ export default function CreatePage() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="password">Location</Label>
-                    <Input
+                    <Autocomplete
+                      apiKey={process.env.NEXT_PUBLIC_GMAPS_API_KEY}
+                      onPlaceSelected={(place) => {
+                        console.log(place);
+                        setLocation(place);
+                      }}
                       id="location"
                       name="location"
-                      type="string"
                       style={{ color: "black" }}
                     />
                   </div>

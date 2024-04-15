@@ -3,6 +3,8 @@ export type Club = {
   name: string;
   description: string;
   location: string;
+  latitude: number;
+  longitude: number;
   thumbnail: string;
   memberNames: string[];
   genres: string[];
