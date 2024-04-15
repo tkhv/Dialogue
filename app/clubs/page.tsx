@@ -11,9 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import ClubMenu from "@/components/clubMenu";
+import { Club, defaultClubs } from "@/lib/types";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function Clubs() {
   const [position, setPosition] = useState("bottom");
+  const [clubsList, setClubsList] = useState<Club[]>([]);
   const router = useRouter();
 
   const [location, setLocation] = useState<{
@@ -63,7 +68,22 @@ export default function Clubs() {
     // getPosition();
   }, []);
 
+  useEffect(() => {
+    const loadDocuments = async () => {
+      const querySnapshot = await getDocs(collection(db, "clubs"));
+      const docs = new Set();
+      querySnapshot.forEach((doc) => {
+        docs.add(doc.data());
+      });
+      let docArray = Array.from(docs);
+      setClubsList(docArray as Club[]);
+    };
+
+    loadDocuments();
+  }, []);
+
   if (location.latitude && location.longitude) {
+    console.log(clubsList);
     return (
       <div
         style={{
@@ -155,6 +175,19 @@ export default function Clubs() {
           </Button>
         </div>
         <Separator />
+        <div
+          style={{
+            overflow: "hidden",
+            maxHeight: "100%",
+            height: "100%",
+          }}
+        >
+          {clubsList.length > 0 ? (
+            <ClubMenu clubs={clubsList} />
+          ) : (
+            <ClubMenu clubs={defaultClubs} />
+          )}
+        </div>
       </div>
     );
   } else {

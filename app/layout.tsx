@@ -17,14 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className} style={{ overflow: "hidden" }}>
         <GlobalContextProvider>
           <Navbar />
           <div
             style={{
               backgroundColor: "#15181D",
               height: "100vh",
-              overflow: "scroll",
+              overflow: "hidden",
               display: "flex",
               justifyContent: "center",
               flexDirection: "row",
