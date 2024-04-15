@@ -61,7 +61,7 @@ export default function CreatePage() {
     const docSnap = await getDoc(docRef);
     console.log(docSnap.data());
 
-    // router.push(`/clubs`);
+    router.push(`/clubs/${club.clubID}`);
   }
 
   return (
