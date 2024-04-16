@@ -1,5 +1,6 @@
 "use client";
 
+import { useGlobalContext } from "@/app/context/authContext";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ import { useState } from "react";
 
 export default function CreatePage() {
   const router = useRouter();
+  const user = useGlobalContext().data;
   const [location, setLocation] = useState({
     address_components: [],
   } as any) as React.SetStateAction<any>;
@@ -24,9 +26,18 @@ export default function CreatePage() {
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const club: Club = {
-      clubID: uuidv4(),
+    const clubid = uuidv4();
+
+    const imgRef = ref(imageStorage, `thumbnails/${clubid}`);
+    await uploadBytes(imgRef, data.get("thumbnail") as Blob);
+    const thumbnailURL = await getDownloadURL(imgRef);
+
+    const docRef = doc(db, "clubs", clubid);
+    await setDoc(docRef, {
+      clubID: clubid,
+      creatorID: user.userID,
       name: data.get("name") as string,
+      blurb: data.get("blurb") as string,
       description: data.get("desc") as string,
       location:
         location.address_components[0].long_name +
@@ -34,34 +45,12 @@ export default function CreatePage() {
         location.address_components[2].short_name,
       latitude: location.geometry.location.lat(),
       longitude: location.geometry.location.lng(),
-      thumbnail: "",
-      memberNames: [],
+      thumbnail: thumbnailURL,
+      memberNames: [user.fname + " " + user.lname],
       genres: [],
       events: [],
-    };
-
-    const imgRef = ref(imageStorage, `thumbnails/${club.clubID}`);
-    await uploadBytes(imgRef, data.get("thumbnail") as Blob);
-    club.thumbnail = await getDownloadURL(imgRef);
-    console.log(club);
-
-    const docRef = doc(db, "clubs", club.clubID);
-    await setDoc(docRef, {
-      clubID: club.clubID,
-      name: club.name,
-      description: club.description,
-      location: club.location,
-      latitude: club.latitude,
-      longitude: club.longitude,
-      thumbnail: club.thumbnail,
-      memberNames: club.memberNames,
-      genres: club.genres,
-      events: club.events,
     });
-    const docSnap = await getDoc(docRef);
-    console.log(docSnap.data());
-
-    router.push(`/clubs/${club.clubID}`);
+    router.push(clubid);
   }
 
   return (
@@ -113,13 +102,22 @@ export default function CreatePage() {
                     />
                   </div>
                 </div>
-
+                <div className="grid gap-2">
+                  <Label htmlFor="blurb">A short blurb</Label>
+                  <Input
+                    id="blurb"
+                    name="blurb"
+                    placeholder="A club for aspiring screenwriters to discuss movies and share scripts."
+                    style={{ color: "black" }}
+                    maxLength={100}
+                  />
+                </div>
                 <div className="grid gap-2">
                   <Label htmlFor="desc">Description</Label>
                   <Textarea
                     id="desc"
                     name="desc"
-                    placeholder="A club for aspiring screenwriters to discuss movies and share scripts."
+                    placeholder="A much longer description of the club and its goals or culture."
                     style={{ color: "black" }}
                   />
                 </div>
@@ -130,6 +128,7 @@ export default function CreatePage() {
                     id="thumbnail"
                     type="file"
                     accept="image/*"
+                    required
                     style={{ color: "black" }}
                   />
                 </div>
