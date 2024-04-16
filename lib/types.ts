@@ -22,7 +22,7 @@ export type Club = {
   events: Event[];
 };
 
-export type Event = {
+export type CreatedEvent = {
   clubID: string;
   clubName: string;
   eventID: string;

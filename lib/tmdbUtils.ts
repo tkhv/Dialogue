@@ -93,3 +93,38 @@ export async function LetterboxdtoIMDB(csv: []): Promise<any> {
   }
   return parsedRatings;
 }
+
+export async function searchTMDB(title: string): Promise<any> {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${title}&include_adult=true&language=en-US&page=1`;
+  const options = {
+    method: "GET",
+  };
+
+  const response = await fetch(url, options);
+  const data = await response.json();
+  if (!data.results.length) {
+    return null;
+  }
+
+  // find the highest data.results[i].vote_count in the array
+  let maxVoteCount = 0;
+  let maxVoteIndex = 0;
+  for (let i = 0; i < data.results.length; i++) {
+    if (data.results[i].vote_count > maxVoteCount) {
+      maxVoteCount = data.results[i].vote_count;
+      maxVoteIndex = i;
+    }
+  }
+
+  const movie = {
+    movie_id: data.results[maxVoteIndex].id,
+    title: data.results[maxVoteIndex].title,
+    genre: data.results[maxVoteIndex].genre_ids[0],
+    posterURL:
+      "https://image.tmdb.org/t/p/original" +
+      data.results[maxVoteIndex].poster_path,
+  };
+  console.log(movie);
+  console.log(data.results);
+  return movie;
+}
