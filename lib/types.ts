@@ -4,6 +4,7 @@ export type User = {
   lname: string;
   email: string;
   password: string;
+  memberOf: string[];
   ratings: [];
 };
 
@@ -19,7 +20,7 @@ export type Club = {
   thumbnail: string;
   memberNames: string[];
   genres: string[];
-  events: Event[];
+  events: CreatedEvent[];
 };
 
 export type CreatedEvent = {
@@ -31,7 +32,10 @@ export type CreatedEvent = {
   date: string;
   time: string;
   location: string;
-  thumbnail: string;
+  virtual: boolean;
+  hasMovie: boolean;
+  movie: {};
+  coordinates: number[];
   attendeNames: string[];
 };
 

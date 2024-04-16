@@ -7,6 +7,9 @@ const nextConfig = {
       "image.tmdb.org",
       "via.placeholder.com",
       "firebasestorage.googleapis.com",
+      "d26oc3sg82pgk3.cloudfront.net",
+      "ncte.org",
+      "encrypted-tbn0.gstatic.com",
     ],
   },
 };

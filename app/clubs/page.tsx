@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import ClubMenu from "@/components/clubMenu";
 import { Club, defaultClubs } from "@/lib/types";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db, resetDB } from "@/lib/firebase";
 
 export default function Clubs() {
   const [position, setPosition] = useState("bottom");
@@ -120,9 +120,6 @@ export default function Clubs() {
                 <DropdownMenuRadioItem value="15">15 mi.</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="25">25 mi.</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="50">50 mi.</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="virtual">
-                  Virtual
-                </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -162,6 +159,19 @@ export default function Clubs() {
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Button
+            variant="outline"
+            style={{
+              color: "white",
+              backgroundColor: "#15181D",
+              marginLeft: "auto",
+            }}
+            onClick={() => {
+              resetDB();
+            }}
+          >
+            Reset DB
+          </Button>
           <Button
             variant="outline"
             style={{

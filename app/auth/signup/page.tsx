@@ -48,6 +48,7 @@ export default function LoginPage() {
           lname: data.get("last-name") as string,
           email: data.get("email") as string,
           password: data.get("password") as string,
+          memberOf: [],
           ratings: [],
         };
 

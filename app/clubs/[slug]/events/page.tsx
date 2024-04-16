@@ -47,6 +47,10 @@ export default function CreateEventsPage({
         location.address_components[0].long_name +
         ", " +
         location.address_components[2].short_name,
+      coordinates: [
+        location.geometry.location.lat(),
+        location.geometry.location.lng(),
+      ],
       virtual: data.get("virtual") === "on",
       hasMovie: hasMovie,
       movie: movie,
