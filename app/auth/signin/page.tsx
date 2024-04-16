@@ -39,7 +39,7 @@ export default function SigninPage() {
             ratings: doc.data().ratings,
           });
 
-          router.push("/home");
+          router.push("/clubs");
           return;
         } else {
           console.log("Incorrect password");
