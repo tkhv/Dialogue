@@ -7,12 +7,14 @@ import {
   SetStateAction,
   useState,
 } from "react";
+import { Club } from "@/lib/types";
 
 type UserData = {
   userID: string;
   fname: string;
   lname: string;
   email: string;
+  memberOf: Club[];
   ratings: [];
 };
 
@@ -32,6 +34,7 @@ const GlobalContext = createContext<ContextProps>({
     lname: "",
     email: "",
     ratings: [],
+    memberOf: [],
   },
   setData: (): UserData[] => [],
 });
@@ -48,6 +51,7 @@ export const GlobalContextProvider = ({
     lname: "",
     email: "",
     ratings: [],
+    memberOf: [],
   });
 
   return (

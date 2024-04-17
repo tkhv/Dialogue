@@ -4,7 +4,7 @@ export type User = {
   lname: string;
   email: string;
   password: string;
-  memberOf: string[];
+  memberOf: Club[];
   ratings: [];
 };
 

@@ -1,3 +1,6 @@
+import { useGlobalContext } from "./context/authContext";
+import { Separator } from "@/components/ui/separator";
+
 export default function Dialogue() {
   return (
     <>
@@ -13,7 +16,25 @@ export default function Dialogue() {
           backgroundPosition: "center",
         }}
       />
-      <div style={{ backgroundColor: "white" }}>hello</div>
+      <Separator />
+      <h1 className="text-4xl font-bold mt-5 mb-5" style={{ color: "white" }}>
+        {" "}
+        Welcome to Dialogue!{" "}
+      </h1>
+      <Separator />
+      <p className="text-lg mt-5" style={{ color: "grey" }}>
+        {" "}
+        Dialogue is a social platform for movie lovers to connect and discuss
+        their favorite movies with others.{" "}
+      </p>
+      <p className="text-lg" style={{ color: "grey" }}>
+        {" "}
+        Join a club to meet other movie lovers and attend events!{" "}
+      </p>
+      <p className="text-lg" style={{ color: "grey" }}>
+        {" "}
+        Get started by signing up or logging in!{" "}
+      </p>
     </>
   );
 }

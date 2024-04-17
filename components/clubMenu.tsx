@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Club } from "@/lib/types";
 import { useRouter } from "next/navigation";
 
-export default function ClubMenu({ clubs }: { clubs: Club[] }) {
+export default function ClubMenu({ clubs }: { clubs: any[] }) {
   const router = useRouter();
 
   return (

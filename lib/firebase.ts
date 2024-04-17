@@ -231,7 +231,7 @@ export async function resetDB() {
       password: "asd",
       ratings: [],
       userID: harshaUserID,
-      memberOf: [clubIDs[0], clubIDs[1]],
+      memberOf: [sampleClubs[0], sampleClubs[1]],
     },
     {
       email: "bob@gmail.com",
@@ -240,7 +240,7 @@ export async function resetDB() {
       password: "asd",
       ratings: [],
       userID: bobUserID,
-      memberOf: [clubIDs[0], clubIDs[1], clubIDs[2]],
+      memberOf: [sampleClubs[0], sampleClubs[1], sampleClubs[2]],
     },
     {
       email: "alice@gmail.com",
@@ -249,7 +249,7 @@ export async function resetDB() {
       password: "asd",
       ratings: [],
       userID: aliceUserID,
-      memberOf: [clubIDs[0], clubIDs[1], clubIDs[2]],
+      memberOf: [sampleClubs[0], sampleClubs[1], sampleClubs[2]],
     },
   ];
 

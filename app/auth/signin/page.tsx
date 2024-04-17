@@ -37,6 +37,7 @@ export default function SigninPage() {
             lname: doc.data().lname,
             email: doc.data().email,
             ratings: doc.data().ratings,
+            memberOf: doc.data().memberOf,
           });
 
           router.push("/clubs");
