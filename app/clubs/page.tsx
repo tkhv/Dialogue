@@ -15,28 +15,56 @@ import ClubMenu from "@/components/clubMenu";
 import { Club, defaultClubs } from "@/lib/types";
 import { collection, getDocs } from "firebase/firestore";
 import { db, resetDB } from "@/lib/firebase";
+import { query, where } from "firebase/firestore";
+const usersRef = collection(db, "users");
+import { useGlobalContext } from "../context/authContext";
 
 export default function Clubs() {
+  const { data } = useGlobalContext();
   const [clubsList, setClubsList] = useState<Club[]>([]);
   const [filteredClubs, setFilteredClubs] = useState<Club[]>([]);
   const [sortBy, setSortBy] = useState("newest");
 
-  const updateSortBy = (value: string) => {
+  // map each club to a similarity score to the user's ratings
+  const similarity = (club: Club) => {
+    let sim = 0;
+    let count = 0;
+    for (const movie in club.membersRatings) {
+      for (const userMovie in data.ratings) {
+        if (movie.title === userMovie.title) {
+          count++;
+          if (
+            Math.abs(club.membersRatings[movie] - data.ratings[userMovie]) < 10
+          ) {
+            sim += 1;
+          } else {
+            sim -= 1;
+          }
+        }
+      }
+    }
+    console.log(sim * count);
+    return sim * count;
+  };
+
+  const updateSortBy = async (value: string) => {
     if (value === "size-asc") {
       setClubsList((prev) =>
-        prev.sort((a, b) => a.memberNames.length - b.memberNames.length)
+        prev.sort((a, b) => a.membersIDs.length - b.membersIDs.length)
       );
     } else if (value === "size-desc") {
       setClubsList((prev) =>
-        prev.sort((a, b) => b.memberNames.length - a.memberNames.length)
+        prev.sort((a, b) => b.membersIDs.length - a.membersIDs.length)
       );
     } else if (value === "sim-asc") {
       setClubsList((prev) =>
-        prev.sort((a, b) => a.genres.length - b.genres.length)
+        // sort clubs by similarity score
+        prev.sort((a, b) => similarity(a) - similarity(b))
       );
     } else if (value === "sim-desc") {
       setClubsList((prev) =>
-        prev.sort((a, b) => b.genres.length - a.genres.length)
+        // sort clubs by similarity score
+        prev.sort((a, b) => similarity(b) - similarity(a))
       );
     } else if (value === "newest") {
       setClubsList((prev) =>

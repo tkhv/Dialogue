@@ -48,14 +48,8 @@ export async function resetDB() {
       longitude: 84.3877,
       thumbnail:
         "https://d26oc3sg82pgk3.cloudfront.net/files/media/edit/image/48319/article_full%401x.png",
-      memberNames: [
-        "Harsha Thottempudi",
-        "Bob Smith",
-        "Alice Wonderland",
-        "John Doe",
-        "Jane Doe",
-        "Tenor Smith",
-      ],
+      membersIDs: [harshaUserID, bobUserID, aliceUserID],
+      membersRatings: [],
       genres: [],
       events: [
         {
@@ -127,7 +121,8 @@ export async function resetDB() {
       longitude: 84.2941,
       thumbnail:
         "https://ncte.org/wp-content/uploads/2020/01/iStock-182677992-1-movie-watching.jpg",
-      memberNames: ["Bob Smith", "Alice Wonderland"],
+      membersIDs: [bobUserID, aliceUserID],
+      membersRatings: [],
       genres: [],
       events: [
         {
@@ -176,15 +171,8 @@ export async function resetDB() {
       longitude: 84.3877,
       thumbnail:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRkgIKJoGsdCMMP_DywbQNVQ3-nGUfsTAjBRVSjQ6bIg&s",
-      memberNames: [
-        "Alice Wonderland",
-        "Bob Smith",
-        "Jane Doe",
-        "John Doe",
-        "Tenor Smith",
-        "Harsha Thottempudi",
-        "Tenor Smith",
-      ],
+      membersIDs: [aliceUserID, bobUserID, harshaUserID],
+      membersRatings: [],
       genres: [],
       events: [
         {
@@ -252,6 +240,34 @@ export async function resetDB() {
       memberOf: [sampleClubs[0], sampleClubs[1], sampleClubs[2]],
     },
   ];
+
+  for (let i = 0; i < sampleUsers.length; i++) {
+    const url = `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${
+      i + 1
+    }&api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}`;
+    const options = {
+      method: "GET",
+    };
+    const response = await fetch(url, options);
+    const data = await response.json();
+    if (!data.results.length) {
+      continue;
+    }
+    for (let j = 0; j < data.results.length; j++) {
+      const movie = {
+        movie_id: data.results[j].id,
+        title: data.results[j].title,
+        genre: data.results[j].genre_ids[0],
+        posterURL:
+          "https://image.tmdb.org/t/p/original" + data.results[j].poster_path,
+        rating: data.results[j].vote_average,
+      };
+      sampleUsers[i].ratings.push(movie);
+      for (const club of sampleUsers[i].memberOf) {
+        club.membersRatings.push(movie);
+      }
+    }
+  }
 
   // Get all clubs and delete them
   const clubsQuery = query(collection(db, "clubs"));

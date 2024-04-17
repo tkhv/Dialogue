@@ -58,9 +58,10 @@ export default function EditPage({ params }: { params: { slug: string } }) {
       latitude: club ? club.latitude : 0,
       longitude: club ? club.longitude : 0,
       thumbnail: thumbnailURL,
-      memberNames: club ? club.memberNames : [],
+      membersIDs: club ? club.membersIDs : [],
       genres: club ? club.genres : [],
       events: club ? club.events : [],
+      membersRatings: club ? club.membersRatings : [],
     });
     router.push(club ? club.clubID : "");
   }

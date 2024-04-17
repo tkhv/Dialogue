@@ -5,7 +5,7 @@ export type User = {
   email: string;
   password: string;
   memberOf: Club[];
-  ratings: [];
+  ratings: any[];
 };
 
 export type Club = {
@@ -18,7 +18,8 @@ export type Club = {
   latitude: number;
   longitude: number;
   thumbnail: string;
-  memberNames: string[];
+  membersIDs: string[];
+  membersRatings: any[];
   genres: string[];
   events: CreatedEvent[];
 };

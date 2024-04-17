@@ -42,7 +42,7 @@ export default function ClubMenu({ clubs }: { clubs: any[] }) {
                     : club.description}
                 </TableCell>
                 <TableCell className="font-medium">
-                  {club.memberNames.length} members
+                  {club.membersIDs.length} members
                 </TableCell>
               </TableRow>
             ))}

@@ -64,7 +64,7 @@ export default function ClubPage({ params }: { params: { slug: string } }) {
         >
           <h1 className="text-4xl font-bold mt-10 mb-8">{club.name}</h1>
           <p className="text-lg">📍 {club.location}, </p>
-          <p className="text-lg">👥 {club.memberNames.length} members</p>
+          <p className="text-lg">👥 {club.membersIDs.length} members</p>
           <p className="text-lg mt-6">{club.description}</p>
           {club.creatorID === data.userID && (
             <>
