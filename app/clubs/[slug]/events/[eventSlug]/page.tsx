@@ -49,7 +49,7 @@ export default function EventPage({
         style={{
           // height: "95vh",
           width: "100%",
-          backgroundColor: "red",
+          // backgroundColor: "red",
           display: "flex",
           justifyContent: "center",
           alignItems: "flex-start",
@@ -65,13 +65,13 @@ export default function EventPage({
         style={{
           // height: "95vh",
           width: "60%",
-          backgroundColor: "blue",
+          // backgroundColor: "blue",
         }}
       >
         <h1 className="text-4xl font-bold mt-10 mb-8">{createdEvent.name}</h1>
         <p className="text-lg">📍 {createdEvent.location}, </p>
         <p className="text-lg">
-          👥 {createdEvent.attendeNames.length} attendee
+          👥 {createdEvent.attendeNames.length} attendees
         </p>
         <p className="text-lg mt-6">{createdEvent.description}</p>
         {!createdEvent.attendeNames.includes(data.fname + " " + data.lname) && (
@@ -81,16 +81,7 @@ export default function EventPage({
               style={{ marginTop: "10%" }}
             >
               {" "}
-              Edit{" "}
-            </Button>
-            <Button
-              onClick={() =>
-                router.push(`/clubs/${createdEvent.clubID}/events`)
-              }
-              style={{ marginTop: "10%", marginLeft: "2%" }}
-            >
-              {" "}
-              Create Event{" "}
+              Attend{" "}
             </Button>
           </>
         )}
