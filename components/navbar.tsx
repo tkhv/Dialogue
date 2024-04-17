@@ -27,6 +27,8 @@ export default function Navbar() {
       fname: "",
       lname: "",
       email: "",
+      memberOf: [],
+      ratings: [],
     });
     router.push("/");
   }
@@ -35,7 +37,7 @@ export default function Navbar() {
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-foreground px-4 md:px-6 z-50">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href={isLoggedIn ? "/home" : "/auth/signin"}
+          href={isLoggedIn ? "/home" : "/"}
           className="flex items-center gap-2 text-lg font-semibold md:text-base text-background"
         >
           DIALOGUE
