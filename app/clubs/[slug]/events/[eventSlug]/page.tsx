@@ -86,14 +86,37 @@ export default function EventPage({
           </u>
         </p>
         <p className="text-lg mt-6">{createdEvent.description}</p>
-        {!createdEvent.attendeNames.includes(data.fname + " " + data.lname) && (
+        {!createdEvent.attendeNames.includes(data.fname + " " + data.lname) ? (
           <>
             <Button
-              onClick={() => router.push(`/clubs/${createdEvent.clubID}/edit`)}
+              onClick={() => {
+                setEvent((prevEvent) => ({
+                  ...prevEvent,
+                  attendeNames: [
+                    ...prevEvent.attendeNames,
+                    data.fname + " " + data.lname,
+                  ],
+                }));
+              }}
               style={{ marginTop: "10%" }}
             >
-              {" "}
-              Attend{" "}
+              Attend
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                setEvent((prevEvent) => ({
+                  ...prevEvent,
+                  attendeNames: prevEvent.attendeNames.filter(
+                    (name) => name !== data.fname + " " + data.lname
+                  ),
+                }));
+              }}
+              style={{ marginTop: "10%" }}
+            >
+              Leave
             </Button>
           </>
         )}

@@ -88,12 +88,14 @@ export default function ClubPage({ params }: { params: { slug: string } }) {
             <>
               <Button
                 onClick={() => {
-                  club.membersIDs.push(data.userID);
+                  setClub((prevClub) => ({
+                    ...prevClub,
+                    membersIDs: [...prevClub.membersIDs, data.userID],
+                  }));
                 }}
                 style={{ marginTop: "10%" }}
               >
-                {" "}
-                Join{" "}
+                Join
               </Button>
             </>
           )}
@@ -102,14 +104,16 @@ export default function ClubPage({ params }: { params: { slug: string } }) {
               <>
                 <Button
                   onClick={() => {
-                    club.membersIDs = club.membersIDs.filter(
-                      (id) => id != data.userID
-                    );
+                    setClub((prevClub) => ({
+                      ...prevClub,
+                      membersIDs: prevClub.membersIDs.filter(
+                        (id) => id !== data.userID
+                      ),
+                    }));
                   }}
                   style={{ marginTop: "10%" }}
                 >
-                  {" "}
-                  Leave{" "}
+                  Leave
                 </Button>
               </>
             )}
