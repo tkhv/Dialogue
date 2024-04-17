@@ -84,6 +84,35 @@ export default function ClubPage({ params }: { params: { slug: string } }) {
               </Button>
             </>
           )}
+          {!club.membersIDs.includes(data.userID) && (
+            <>
+              <Button
+                onClick={() => {
+                  club.membersIDs.push(data.userID);
+                }}
+                style={{ marginTop: "10%" }}
+              >
+                {" "}
+                Join{" "}
+              </Button>
+            </>
+          )}
+          {club.creatorID != data.userID &&
+            club.membersIDs.includes(data.userID) && (
+              <>
+                <Button
+                  onClick={() => {
+                    club.membersIDs = club.membersIDs.filter(
+                      (id) => id != data.userID
+                    );
+                  }}
+                  style={{ marginTop: "10%" }}
+                >
+                  {" "}
+                  Leave{" "}
+                </Button>
+              </>
+            )}
         </div>
       </div>
       <Separator />

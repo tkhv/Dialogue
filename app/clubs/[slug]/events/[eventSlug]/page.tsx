@@ -56,7 +56,7 @@ export default function EventPage({
         }}
       >
         <img
-          src={createdEvent.movie.posterURL}
+          src={createdEvent.movie.posterURL || `https://imgur.com/uNUpmEC.png`}
           alt="Thumbnail"
           style={{ maxHeight: "350px", marginTop: "5%" }}
         />
@@ -72,6 +72,18 @@ export default function EventPage({
         <p className="text-lg">📍 {createdEvent.location}, </p>
         <p className="text-lg">
           👥 {createdEvent.attendeNames.length} attendees
+        </p>
+        <p className="text-lg">
+          Hosted by{" "}
+          <u>
+            <a
+              onClick={() => router.push(`/clubs/${createdEvent.clubID}`)}
+              style={{ cursor: "pointer" }}
+            >
+              {" "}
+              {createdEvent.clubName}{" "}
+            </a>
+          </u>
         </p>
         <p className="text-lg mt-6">{createdEvent.description}</p>
         {!createdEvent.attendeNames.includes(data.fname + " " + data.lname) && (
