@@ -10,6 +10,7 @@ const nextConfig = {
       "d26oc3sg82pgk3.cloudfront.net",
       "ncte.org",
       "encrypted-tbn0.gstatic.com",
+      "imgur.com",
     ],
   },
 };

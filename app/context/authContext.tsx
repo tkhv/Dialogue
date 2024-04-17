@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { Club } from "@/lib/types";
+import { APIProvider } from "@vis.gl/react-google-maps";
 
 type UserData = {
   userID: string;
@@ -58,7 +59,9 @@ export const GlobalContextProvider = ({
     <GlobalContext.Provider
       value={{ isLoggedIn, setIsLoggedIn, data, setData }}
     >
-      {children}
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_API_KEY}>
+        {children}
+      </APIProvider>
     </GlobalContext.Provider>
   );
 };

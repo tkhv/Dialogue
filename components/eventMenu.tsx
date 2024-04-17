@@ -35,7 +35,10 @@ export default function EventMenu({ eventsList }: { eventsList: any[] }) {
                     alt="Thumbnail"
                     className="aspect-square rounded-md object-cover"
                     height="64"
-                    src={createdEvent.movie.posterURL}
+                    src={
+                      createdEvent.movie.posterURL ||
+                      `https://imgur.com/uNUpmEC.png`
+                    }
                     width="64"
                   />
                 </TableCell>
