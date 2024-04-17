@@ -23,7 +23,7 @@ export default function MoviePage() {
         color: "white",
       }}
     >
-      <h1 className="text-4xl font-bold text-center mt-8">Now Playing</h1>
+      <h1 className="text-4xl font-bold text-center mt-8">In Theatres</h1>
       <MovieMenu />
       <h1 className="text font-bold text-center mt-5">
         Or, search for movies:

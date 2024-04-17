@@ -149,7 +149,7 @@ export default function CreateEventsPage({
                     style={{ color: "black" }}
                   />
                 </div>
-                <Label htmlFor="virtual">
+                <Label htmlFor="movie">
                   Movie <i>(optional)</i>
                 </Label>
                 <Input
@@ -159,6 +159,18 @@ export default function CreateEventsPage({
                   placeholder="Schindler's List"
                   style={{ color: "black" }}
                 />
+                <div
+                  className="grid gap-2"
+                  style={{
+                    maxWidth: "50%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Label htmlFor="ffa">Open for non-members: </Label>
+                  <input type="checkbox" id="ffa" name="ffa" />
+                </div>
                 <Button
                   type="submit"
                   className="w-full"

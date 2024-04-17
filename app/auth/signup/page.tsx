@@ -10,6 +10,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -126,10 +137,6 @@ export default function LoginPage() {
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
-          <CardDescription>
-            Optionally, import ratings from Letterboxd and IMDb to improve club
-            reccomendations.
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={submit}>
@@ -170,6 +177,65 @@ export default function LoginPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="ratings">Import Ratings</Label>
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <CardDescription>
+                      Optionally, import your ratings from Letterboxd or IMDb to
+                      improve club reccomendations.{" "}
+                      <u style={{ cursor: "pointer" }}>See how.</u>{" "}
+                    </CardDescription>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Import Ratings</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        <p>Importing from Letterboxd:</p>
+                        <ul>
+                          <li>
+                            • Log into your{" "}
+                            <a
+                              href="https://letterboxd.com/settings/data/"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="underline"
+                            >
+                              data settings.
+                            </a>{" "}
+                          </li>
+                          <li>• Click “Export” </li>
+                          <li>• Upload the CSV here </li>
+                        </ul>
+                        <br />
+                        <p>Importing from IMDb:</p>
+                        <ul>
+                          <li>
+                            • On{" "}
+                            <a
+                              href="https://www.imdb.com/?ref_=nv_home"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="underline"
+                            >
+                              IMDb
+                            </a>
+                            , go to “Your Ratings” from the user menu (top
+                            right)
+                          </li>
+                          <li>
+                            • Click the three vertical dots at top right, then
+                            select “Export”{" "}
+                          </li>
+                          <li>• Upload the CSV here </li>
+                        </ul>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogAction>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+
                 <Input type="file" name="file" accept=".csv" />
               </div>
               <Button type="submit" className="w-full">

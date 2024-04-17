@@ -40,7 +40,7 @@ export default function SigninPage() {
             memberOf: doc.data().memberOf,
           });
 
-          router.push("/clubs");
+          router.push("/home");
           return;
         } else {
           console.log("Incorrect password");

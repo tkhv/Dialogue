@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { getNowPlaying, Movie } from "@/lib/tmdbUtils";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useRouter } from "next/navigation";
 
 export default function MovieMenu() {
+  const router = useRouter();
   const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
@@ -28,6 +30,8 @@ export default function MovieMenu() {
                 className="aspect-[3/4] h-fit w-fit object-cover max-w-[300px] max-h-[260px]"
                 width={300}
                 height={400}
+                onClick={() => router.push(`/movies/${movie.title}`)}
+                style={{ cursor: "pointer" }}
               />
             </div>
           </figure>
