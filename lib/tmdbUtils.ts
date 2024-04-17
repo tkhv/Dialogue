@@ -128,3 +128,22 @@ export async function searchTMDB(title: string): Promise<any> {
   console.log(data.results);
   return movie;
 }
+
+export async function searchTMDBMulti(title: string): Promise<any> {
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${title}&include_adult=true&language=en-US&page=1`;
+  const options = {
+    method: "GET",
+  };
+
+  const response = await fetch(url, options);
+  const data = await response.json();
+  if (!data.results.length) {
+    return null;
+  }
+  let res = [];
+  for (let i = 0; i < data.results.length; i++) {
+    res.push(data.results[i].id);
+  }
+
+  return res;
+}
