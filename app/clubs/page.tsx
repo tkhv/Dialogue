@@ -17,8 +17,47 @@ import { collection, getDocs } from "firebase/firestore";
 import { db, resetDB } from "@/lib/firebase";
 
 export default function Clubs() {
-  const [position, setPosition] = useState("bottom");
   const [clubsList, setClubsList] = useState<Club[]>([]);
+  const [filteredClubs, setFilteredClubs] = useState<Club[]>([]);
+  const [sortBy, setSortBy] = useState("newest");
+
+  const updateSortBy = (value: string) => {
+    if (value === "size-asc") {
+      setClubsList((prev) =>
+        prev.sort((a, b) => a.memberNames.length - b.memberNames.length)
+      );
+    } else if (value === "size-desc") {
+      setClubsList((prev) =>
+        prev.sort((a, b) => b.memberNames.length - a.memberNames.length)
+      );
+    } else if (value === "sim-asc") {
+      setClubsList((prev) =>
+        prev.sort((a, b) => a.genres.length - b.genres.length)
+      );
+    } else if (value === "sim-desc") {
+      setClubsList((prev) =>
+        prev.sort((a, b) => b.genres.length - a.genres.length)
+      );
+    } else if (value === "newest") {
+      setClubsList((prev) =>
+        prev.sort(
+          (a, b) => Date.parse(b.events[0].date) - Date.parse(a.events[0].date)
+        )
+      );
+    }
+    setSortBy(value);
+  };
+
+  const [distance, setDistance] = useState("25");
+  const updateDistance = async (value: string) => {
+    // for (let i = 0; i < clubsList.length; i++) {
+    //   const resp = await fetch(
+    //     `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${location.latitude},${location.longitude}&destinations=${clubsList[i].latitude},${clubsList[i].longitude}&key=${process.env.NEXT_PUBLIC_GMAPS_API_KEY}`
+    //   );
+    //   console.log(await resp.json());
+    // setDistance(value);
+  };
+
   const router = useRouter();
 
   const [location, setLocation] = useState<{
@@ -77,6 +116,7 @@ export default function Clubs() {
       });
       let docArray = Array.from(docs);
       setClubsList(docArray as Club[]);
+      setFilteredClubs(docArray as Club[]);
     };
 
     loadDocuments();
@@ -114,8 +154,8 @@ export default function Clubs() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40">
               <DropdownMenuRadioGroup
-                value={position}
-                onValueChange={setPosition}
+                value={distance}
+                onValueChange={updateDistance}
               >
                 <DropdownMenuRadioItem value="15">15 mi.</DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="25">25 mi.</DropdownMenuRadioItem>
@@ -138,8 +178,8 @@ export default function Clubs() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40">
               <DropdownMenuRadioGroup
-                value={position}
-                onValueChange={setPosition}
+                value={sortBy}
+                onValueChange={updateSortBy}
               >
                 <DropdownMenuRadioItem value="size-asc">
                   Size Asc.
@@ -193,7 +233,7 @@ export default function Clubs() {
           }}
         >
           {clubsList.length > 0 ? (
-            <ClubMenu clubs={clubsList} />
+            <ClubMenu clubs={filteredClubs} />
           ) : (
             <ClubMenu clubs={defaultClubs} />
           )}
