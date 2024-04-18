@@ -35,9 +35,12 @@ export async function getNowPlaying(): Promise<Movie[]> {
   return fmtResults(await response.json());
 }
 
-export async function IMDBtoTMDB(csv: []): Promise<any> {
+export async function IMDBtoTMDB(
+  csv: [],
+  setProgress: React.Dispatch<React.SetStateAction<number>>
+): Promise<any> {
   const parsedRatings = [];
-  for (let i = 1; i < csv.length; i++) {
+  for (let i = 1; i < Math.min(100, csv.length); i++) {
     const imdbID = csv[i][0];
     const url = `https://api.themoviedb.org/3/find/${imdbID}?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&external_source=imdb_id`;
     const options = {
@@ -59,14 +62,18 @@ export async function IMDBtoTMDB(csv: []): Promise<any> {
     };
     parsedRatings.push(movie);
     // sleep for 0.25 seconds
+    setProgress((i / Math.min(100, csv.length)) * 100);
     await new Promise((r) => setTimeout(r, 80));
   }
   return parsedRatings;
 }
 
-export async function LetterboxdtoIMDB(csv: []): Promise<any> {
+export async function LetterboxdtoIMDB(
+  csv: [],
+  setProgress: React.Dispatch<React.SetStateAction<number>>
+): Promise<any> {
   const parsedRatings = [];
-  for (let i = 1; i < 70 && i < csv.length; i++) {
+  for (let i = 1; i < Math.min(50, csv.length); i++) {
     const title = csv[i][1];
     const year = csv[i][2];
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&query=${title}&year=${year}&include_adult=true&page=1`;
@@ -89,6 +96,7 @@ export async function LetterboxdtoIMDB(csv: []): Promise<any> {
     parsedRatings.push(movie);
     // sleep for 0.25 seconds
     await new Promise((r) => setTimeout(r, 80));
+    setProgress((i / Math.min(50, csv.length)) * 100);
     console.log("sleeping...");
   }
   return parsedRatings;

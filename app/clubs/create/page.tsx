@@ -47,7 +47,7 @@ export default function CreatePage() {
       longitude: location.geometry.location.lng(),
       thumbnail: thumbnailURL,
       membersIDs: [user.userID],
-      membersRatings: [user.ratings],
+      membersRatings: [],
       genres: [],
       events: [],
     });

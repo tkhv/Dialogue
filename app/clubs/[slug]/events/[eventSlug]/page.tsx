@@ -86,6 +86,7 @@ export default function EventPage({
           </u>
         </p>
         <p className="text-lg mt-6">{createdEvent.description}</p>
+
         {!createdEvent.attendeNames.includes(data.fname + " " + data.lname) ? (
           <>
             <Button

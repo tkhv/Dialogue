@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 export default function ClubPage({ params }: { params: { slug: string } }) {
   const router = useRouter();
   const [club, setClub] = useState<Club>();
-  const { data } = useGlobalContext();
+  const { data, setData } = useGlobalContext();
 
   useEffect(() => {
     const loadDocuments = async () => {
@@ -91,6 +91,10 @@ export default function ClubPage({ params }: { params: { slug: string } }) {
                   setClub((prevClub) => ({
                     ...prevClub,
                     membersIDs: [...prevClub.membersIDs, data.userID],
+                  }));
+                  setData((prevData) => ({
+                    ...prevData,
+                    memberOf: [...prevData.memberOf, club],
                   }));
                 }}
                 style={{ marginTop: "10%" }}

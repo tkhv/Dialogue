@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -30,6 +31,9 @@ import { v4 as uuidv4 } from "uuid";
 import { IMDBtoTMDB, LetterboxdtoIMDB } from "@/lib/tmdbUtils";
 import { useRouter } from "next/navigation";
 import { doc, setDoc } from "firebase/firestore";
+import { Progress } from "@/components/ui/progress";
+import { useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 const usersRef = collection(db, "users");
 
@@ -37,6 +41,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [progress, setProgress] = useState(0);
 
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -88,7 +93,7 @@ export default function LoginPage() {
             parseCSV(file)
               .then((data) => {
                 if (data[0][0] == "Const") {
-                  IMDBtoTMDB(data as []).then((res) => {
+                  IMDBtoTMDB(data as [], setProgress).then((res) => {
                     user.ratings = res;
                     console.log(user);
                     const docRef = doc(db, "users", user.userID);
@@ -98,7 +103,7 @@ export default function LoginPage() {
                     });
                   });
                 } else {
-                  LetterboxdtoIMDB(data as []).then((res) => {
+                  LetterboxdtoIMDB(data as [], setProgress).then((res) => {
                     user.ratings = res;
                     console.log(user);
                     const docRef = doc(db, "users", user.userID);
@@ -189,6 +194,7 @@ export default function LoginPage() {
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Import Ratings</AlertDialogTitle>
+                      <Separator style={{ height: "2px" }} />
                       <AlertDialogDescription>
                         <p>Importing from Letterboxd:</p>
                         <ul>
@@ -238,12 +244,25 @@ export default function LoginPage() {
 
                 <Input type="file" name="file" accept=".csv" />
               </div>
-              <Button type="submit" className="w-full">
-                Create an account
-              </Button>
+              {progress == 0 ? (
+                <Button type="submit" className="w-full">
+                  Create an account
+                </Button>
+              ) : (
+                <Button type="submit" className="w-full" disabled>
+                  Create an account
+                </Button>
+              )}
             </div>
           </form>
         </CardContent>
+        {progress > 0 ? (
+          <CardFooter>
+            <Progress value={progress} className="w-[100%]" />
+          </CardFooter>
+        ) : (
+          <></>
+        )}
       </Card>
 
       <div className="mt-4 text-center text-sm">
