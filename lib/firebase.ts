@@ -35,6 +35,47 @@ export async function resetDB() {
     clubIDs.push(uuidv4());
   }
 
+  const sampleComments = [
+    {
+      username: "Sarah Miller",
+      comment: "I'll get the guac and chips!",
+      likes: 0,
+      commentID: uuidv4(),
+    },
+    {
+      username: "Chris Anderson",
+      comment: "I'm bringing popcorn! Who else is in for snacks?",
+      likes: 0,
+      commentID: uuidv4(),
+    },
+    {
+      username: "John Doe",
+      comment:
+        "I'm so excited for this one guys! Can't wait to see you all there!",
+      likes: 0,
+      commentID: uuidv4(),
+    },
+    // {
+    //   username: "Jane Smith",
+    //   comment: "Yes! This looks like such a great movie choice. Count me in!",
+    //   likes: 0,
+    //   commentID: uuidv4(),
+    // },
+    // {
+    //   username: "Mike Johnson",
+    //   comment: "Sounds awesome! Looking forward to it.",
+    //   likes: 0,
+    //   commentID: uuidv4(),
+    // },
+    // {
+    //   username: "Emily Wong",
+    //   comment:
+    //     "I've heard great things about this movie. Can't wait for movie night!",
+    //   likes: 0,
+    //   commentID: uuidv4(),
+    // },
+  ];
+
   const sampleClubs: Club[] = [
     {
       clubID: clubIDs[0],
@@ -287,5 +328,14 @@ export async function resetDB() {
   // Save the sample clubs
   for (const club of sampleClubs) {
     await setDoc(doc(db, "clubs", club.clubID), club);
+  }
+
+  // Save the sample comments for each event
+  for (const club of sampleClubs) {
+    for (const event of club.events) {
+      await setDoc(doc(db, "comments", event.eventID), {
+        comments: sampleComments,
+      });
+    }
   }
 }
