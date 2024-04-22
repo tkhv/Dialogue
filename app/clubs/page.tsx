@@ -25,6 +25,27 @@ export default function Clubs() {
   const [filteredClubs, setFilteredClubs] = useState<Club[]>([]);
   const [sortBy, setSortBy] = useState("newest");
 
+  useEffect(() => {
+    // fetch movies similar to the top 5 rated by the user
+    const topfive = data.ratings
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 5);
+    console.log("topfive:", topfive);
+
+    const similarMovies = async () => {
+      for (let i = 0; i < topfive.length; i++) {
+        console.log("topfive[i], ", topfive[i]);
+        const resp = await fetch(
+          `https://api.themoviedb.org/3/movie/${topfive[i].movie_id}/similar?api_key=${process.env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1`
+        );
+        const json = await resp.json();
+        console.log(json);
+      }
+    };
+
+    similarMovies();
+  }, []);
+
   // map each club to a similarity score to the user's ratings
   const similarity = (club: Club) => {
     let sim = 0;
@@ -43,7 +64,6 @@ export default function Clubs() {
         }
       }
     }
-    console.log(sim * count);
     return sim * count;
   };
 
