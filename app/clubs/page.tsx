@@ -116,43 +116,43 @@ export default function Clubs() {
   }>({ latitude: null, longitude: null, city: "", state: "" });
 
   useEffect(() => {
-    // const geocode = async (lat: number, long: number) => {
-    //   const resp = await fetch(
-    //     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${process.env.NEXT_PUBLIC_GMAPS_API_KEY}`
-    //   );
-    //   return await resp.json();
-    // };
+    const geocode = async (lat: number, long: number) => {
+      const resp = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${process.env.NEXT_PUBLIC_GMAPS_API_KEY}`
+      );
+      return await resp.json();
+    };
 
-    // const getPosition = async () => {
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition(async (position) => {
-    //       const response = await geocode(
-    //         position.coords.latitude,
-    //         position.coords.longitude
-    //       );
-    //       console.log(response);
+    const getPosition = async () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const response = await geocode(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          console.log(response);
 
-    //       setLocation({
-    //         latitude: position.coords.latitude,
-    //         longitude: position.coords.longitude,
-    //         city: response.results[0].address_components[2].long_name,
-    //         state: response.results[0].address_components[4].short_name,
-    //       });
-    //     });
-    //   } else {
-    console.log(
-      "Geolocation is not supported by this browser, hardcoding Atlanta, GA."
-    );
-    setLocation({
-      latitude: 33.7488,
-      longitude: 84.3877,
-      city: "Atlanta",
-      state: "GA",
-    });
-    // }
-    // };
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            city: response.results[0].address_components[2].long_name,
+            state: response.results[0].address_components[4].short_name,
+          });
+        });
+      } else {
+        console.log(
+          "Geolocation is not supported by this browser, hardcoding Atlanta, GA."
+        );
+        setLocation({
+          latitude: 33.7488,
+          longitude: 84.3877,
+          city: "Atlanta",
+          state: "GA",
+        });
+      }
+    };
 
-    // getPosition();
+    getPosition();
   }, []);
 
   useEffect(() => {

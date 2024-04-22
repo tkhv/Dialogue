@@ -218,7 +218,7 @@ export default function LoginPage() {
                           <li>
                             • On{" "}
                             <a
-                              href="https://www.imdb.com/?ref_=nv_home"
+                              href="https://www.imdb.com/list/ratings?ref_=nv_usr_rt_4"
                               target="_blank"
                               rel="noreferrer"
                               className="underline"
